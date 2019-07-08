@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+<div class="container">
+    {{wtf.quick_form(form)}}
+
+		<div>
+			<h3>Comments for {{blog.title}}</h3>
+		</div>
+
+	{% if comments %}
+	<div class="row text-center">
+        {% for comment in comments %}
+        <div class="col-md-4">
+            <div class="well">
+                <h4><a style="color: brown">{{ comment.comment}}</a></h4>
+                <p class="text-right">Posted by: {{comment.user.username}}</p>
+            </div>
+            <hr>
+        </div>
+        {% endfor %}
+	</div>
+	{% else %}
+        <h3>No comment</h3>
+	{% endif %}
+</div>
+{% endblock %}

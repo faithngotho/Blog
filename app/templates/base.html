@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        {%if title %}
-        <title> {{ title }}</title>
-        {% else %}
-        <title>Welcome to Blog</title>
-        {% endif %}
-    </head>
-</html>
+{% extends 'bootstrap/base.html'%}
+
+{% block styles %}
+    {{super()}}
+    <!--Importing the simple mde css and js files  -->
+    {{ simplemde.css}}
+    {{ simplemde.js }}
+  <!-- Font Awesome -->
+   
+  {% endblock %}
+<!-- Navbar block  --> 
+{% block navbar %}
+    {% include 'navbar.html' %}
+{% endblock %}

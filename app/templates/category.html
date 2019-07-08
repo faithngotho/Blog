@@ -1,0 +1,36 @@
+
+  
+{% extends 'base.html' %}
+
+{% block content %}
+  <div style="text-align:center;">
+    {% for blog in blog %}
+    <div class="jumbotron" style="background-color: #17A589;">
+      <h2>{{blog.title}}</h2>
+      <p><strong>Category:</strong> {{blog.category}}</p>
+    </div>
+
+    <div>
+      <h4>{{blog.description}}</h4>
+      <p><strong>Posted by:</strong> {{blog.user.username}}</p>
+      <hr>
+      <p>{{blog.posted}}</p>
+    </div>
+
+    <div class="row">
+      <span>
+        <a href="{{url_for('main.new_comment',blog_id = blog.id)}}">Comments</a>
+      </span>
+      <br>
+      <span>
+        <p><a href="{{url_for('main.upvote',blog_id = blog.id)}}"><strong>Upvote:</strong> {{blog.upvotes.count()}}</a></p
+      </span>
+
+      <span>
+        <p><a href="{{url_for('main.downvote',blog_id = blog.id)}}"><strong>Downvote:</strong> {{blog.downvotes.count()}}</a></p>
+      </span>
+    </div>
+      {% endfor %}
+  </div>
+</body>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+        <div class="jumbotron" style="text-align:center; background-color:#17A589;">
+          <h2><strong>Welcome to my Blog </strong></h2>
+        </div>
+          <hr>
+          <div class="row" style="text-align:center">
+          <h3 ><strong>Categories</strong></h3>
+          <a class="btn btn-outline-blue btn-lg" href="/blog/new"><h4>Blog</h4></a>
+        </div>
+      </div>
+    </div>
+{% endblock %}
