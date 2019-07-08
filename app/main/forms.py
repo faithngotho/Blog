@@ -9,7 +9,6 @@ class UpdateProfile(FlaskForm):
 class BlogForm(FlaskForm):
     title = StringField('title', validators = [Required()])
     description = TextAreaField('description', validators = [Required()])
-    category = SelectField('Choose category', choices=[('entertainment', 'Entertainment')])
     submit = SubmitField('Submit')
 
 class CommentForm(FlaskForm):
