@@ -9,7 +9,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class User(UserMixin, db.Model):
-    __tablename__ = 'users'
+    __tablename__ = 'user'
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)
@@ -55,7 +55,7 @@ class Quote:
 
 class Post(db.Model):
 
-    __tablename__ = 'posts'
+    __tablename__ = 'post'
 
     id = db.Column(db.Integer,primary_key = True)
     title = db.Column(db.String)
@@ -68,9 +68,9 @@ class Post(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_posts(cls,id):
-        posts = Post.query.order_by(post_id=id).desc().all()
-        return posts
+    def get_post(cls,id):
+        post = Post.query.order_by(post_id=id).desc().all()
+        return post
 
 class Comment(db.Model):
 
@@ -79,7 +79,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     comment = db.Column(db.String)
     posted_c = db.Column(db.DateTime,default=datetime.utcnow)
-    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
     user_c = db.Column(db.Integer,db.ForeignKey("users.id"), nullable=False)
 
     def save_comment(self):
