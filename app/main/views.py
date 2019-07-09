@@ -2,8 +2,8 @@ from flask import render_template, request, redirect, url_for, abort
 from . import main
 from .. import db,photos
 from flask_login import login_required, current_user
-from ..models import User, Blog, Comment, Upvote, Downvote
-from .forms import UpdateProfile, BlogForm, CommentForm
+from ..models import User, Post, Comment
+from .forms import UpdateProfile, PostForm, CommentForm
 import markdown2
 
 @main.route('/')
@@ -11,8 +11,8 @@ def index():
     '''
     View root page function that returns the index page and its data
     '''
-    title = 'Welcome to my Blog'
-    return render_template('index.html', title = title)
+    title = 'Welcome to my Quote'
+    return render_template('index.html', title = title, quote=quote)
     
 @main.route('/user/<uname>')
 def profile(uname):
@@ -21,7 +21,7 @@ def profile(uname):
     if user is None:
         abort(404)
 
-    title = 'Welcome to my Blog'
+    title = 'Welcome to my Quote'
     return render_template("profile/profile.html", user = user)
 
 @main.route('/user/<uname>/update',methods = ['GET','POST'])
@@ -57,17 +57,16 @@ def update_pic(uname):
 @main.route('/<cat>', methods=['GET', 'POST'])
 def category(cat):
     cat = cat
-    blog = Blog.query.filter_by(category=cat).order_by(Blog.posted.desc()).all()
+    posts = Post.query.filter_by(category=cat).order_by(PostForm.posted.desc()).all()
 
     title = 'Welcome to my Blog'
-    return render_template('category.html', blog=blog)
+    return render_template('category.html', post=post)
 
-@main.route('/blog/new', methods = ['GET','POST'])
+@main.route('/posts/new', methods = ['GET','POST'])
 @login_required
-def new_blog():
+def new_post():
 
     form = BlogForm()
-    my_upvotes = Upvote.query.filter_by(blog_id=Blog.id)
 
     if form.validate_on_submit():
         title = form.title.data
@@ -75,18 +74,18 @@ def new_blog():
         user_p = current_user
         category = form.category.data
 
-        new_blog = Blog(user_p=current_user._get_current_object().id, title=title, category=category, description = description)
+        new_post = photos(user_p=current_user._get_current_object().id, title=title, category=category, description = description)
 
-        new_blog.save_blog()
-        blog = Blog.query.filter_by(category=category).order_by(Blog.posted.desc()).all()
-        return render_template('category.html', blog=blog)
-    return render_template('blog.html', form=form)
+        new_post.save_post()
+        post = Post.query.filter_by(category=category).order_by(Blog.posted.desc()).all()
+        return render_template('category.html', post=post)
+    return render_template('post.html', form=form)
 
 @main.route('/comment/new/<int:blog_id>', methods = ['GET','POST'])
 @login_required
-def new_comment(blog_id):
+def new_comment(post_id):
     form = CommentForm()
-    blog = Blog.query.get(blog_id)
+    post = Post.query.get(post_id)
 
     if form.validate_on_submit():
         comment = form.comment.data
@@ -96,45 +95,15 @@ def new_comment(blog_id):
 
         # save comment method
         new_comment.save_comment()
-        return redirect(url_for('.new_comment',blog_id = blog_id ))
+        return redirect(url_for('.new_comment',post_id = post_id ))
 
-    all_comments = Comment.query.filter_by(blog_id=blog_id).all()
-    return render_template('comments.html', form=form, comments=all_comments, blog=blog)
+    all_comments = Comment.query.filter_by(post_id=post_id).all()
+    return render_template('comments.html', form=form, comments=all_comments, post=post)
 
-@main.route('/blog/upvote/<int:blog_id>/upvote', methods=['GET','POST'])
-@login_required
-def upvote(blog_id):
-    blog = Blog.query.get(blog_id)
-    user = current_user
-    blog_upvotes = Upvote.query.filter_by(blog_id=blog_id)
-    blog = Blog.query.filter_by(category=blog.category).order_by(Blog.posted.desc()).all()
-
-    if Upvote.query.filter(Upvote.user_id == user.id, Upvote.blog_id == blog_id).first():
-        return render_template('category.html', blog=blog)
-
-    new_upvote = Upvote(blog_id=blog_id, user=current_user)
-    new_upvote.save_upvotes()
-    
-    return render_template('category.html', blog=blog)
-
-@main.route('/blog/downvote/<int:blog_id>/downvote', methods=['GET', 'POST'])
-@login_required
-def downvote(blog_id):
-    blog = Blog.query.get(blog_id)
-    user = current_user
-    blog_downvotes = Downvote.query.filter_by(blog_id=blog_id)
-    blog = Blog.query.filter_by(category=blog.category).order_by(Blog.posted.desc()).all()
-
-    if Downvote.query.filter(Downvote.user_id == user.id, Downvote.blog_id == blog_id).first():
-        return render_template('category.html', blog=blog)
-
-    new_downvote = Downvote(blog_id=blog_id, user=current_user)
-    new_downvote.save_downvotes()
-    return render_template('category.html', blog=blog)
 
 @main.route('/myblog', methods=['GET', 'POST'])
 @login_required
-def my_blog():
+def my_post():
     user = current_user._get_current_object().id
-    blog = Blog.query.filter_by(user_p=user)
-    return render_template('category.html', blog=blog)
+    blog = Post.query.filter_by(user_p=user)
+    return render_template('category.html', post=post)
