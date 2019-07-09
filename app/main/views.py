@@ -16,6 +16,7 @@ def index():
     title = 'Welcome to Quote'
     quote= get_quote()
     return render_template('index.html', title = title, quote=quote)
+ 
     
 @main.route('/user/<uname>')
 def profile(uname):

@@ -4,7 +4,7 @@ class Config:
     '''
     General configuration parent class
     '''
-    SECRET_KEY = "1234"
+    SECRET_KEY = "12345"
     UPLOADED_PHOTOS_DEST = 'app/static/photos'
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SSL_DISABLE = False
