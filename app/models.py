@@ -61,7 +61,7 @@ class Post(db.Model):
     title = db.Column(db.String)
     description = db.Column(db.String)
     posted_p = db.Column(db.DateTime,default=datetime.utcnow)
-    user_p = db.Column(db.Integer,db.ForeignKey("users.id"),  nullable=False)
+    user_p = db.Column(db.Integer,db.ForeignKey("user.id"),  nullable=False)
     
     def save_post(self):
         db.session.add(self)
@@ -80,7 +80,7 @@ class Comment(db.Model):
     comment = db.Column(db.String)
     posted_c = db.Column(db.DateTime,default=datetime.utcnow)
     post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
-    user_c = db.Column(db.Integer,db.ForeignKey("users.id"), nullable=False)
+    user_c = db.Column(db.Integer,db.ForeignKey("user.id"), nullable=False)
 
     def save_comment(self):
         db.session.add(self)
