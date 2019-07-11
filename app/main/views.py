@@ -92,7 +92,7 @@ def new_post():
 @main.route('/posts', methods=['GET', 'POST'])
 def posts():
     posts = Post.query.order_by(Post.posted_p.desc()).all()
-    return render_template('posts.html', posts=posts)
+    return render_template('posts.html',posts=posts)
 
 @main.route('/comment/new/<int:post_id>', methods = ['GET','POST'])
 @login_required

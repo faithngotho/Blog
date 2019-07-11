@@ -9,7 +9,7 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 class User(UserMixin, db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'users'
     id = db.Column(db.Integer,primary_key = True)
     username = db.Column(db.String(255),index = True)
     email = db.Column(db.String(255),unique = True,index = True)
@@ -55,13 +55,13 @@ class Quote:
 
 class Post(db.Model):
 
-    __tablename__ = 'post'
+    __tablename__ = 'posts'
 
     id = db.Column(db.Integer,primary_key = True)
     title = db.Column(db.String)
     description = db.Column(db.String)
     posted_p = db.Column(db.DateTime,default=datetime.utcnow)
-    user_p = db.Column(db.Integer,db.ForeignKey("user.id"),  nullable=False)
+    user_p = db.Column(db.Integer,db.ForeignKey("users.id"),  nullable=False)
     
     def save_post(self):
         db.session.add(self)
@@ -69,8 +69,8 @@ class Post(db.Model):
 
     @classmethod
     def get_post(cls,id):
-        post = Post.query.order_by(post_id=id).desc().all()
-        return post
+        posts = Post.query.order_by(post_id=id).desc().all()
+        return posts
 
 class Comment(db.Model):
 
@@ -79,8 +79,8 @@ class Comment(db.Model):
     id = db.Column(db.Integer,primary_key = True)
     comment = db.Column(db.String)
     posted_c = db.Column(db.DateTime,default=datetime.utcnow)
-    post_id = db.Column(db.Integer, db.ForeignKey("post.id"), nullable=False)
-    user_c = db.Column(db.Integer,db.ForeignKey("user.id"), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey("posts.id"), nullable=False)
+    user_c = db.Column(db.Integer,db.ForeignKey("users.id"), nullable=False)
 
     def save_comment(self):
         db.session.add(self)
