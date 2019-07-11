@@ -12,7 +12,6 @@ This is a web application where I as a user get to sign up, view different posts
 |Add a new post|	Click on new post |Page is displayed and user can pitch           |
 |Add a comment |	Click on comment  |	Comment	Form is displayed and user can comment|
 
-Virtual environment(virtualenv)
 ## Setup
 1. Clone the application using git clone(this copies the app onto your device). In your terminal:
 2. $ git clone https://github.com/faithngotho/Blog.git
